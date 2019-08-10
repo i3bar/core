@@ -120,4 +120,60 @@ $ i3 reload
 
 ## API
 
-Coming soon...
+### Enable Events
+
+```typescript
+enableEvents(): void;
+```
+
+> **Note**: This will alow you to use events such as right and left clicking, middle click (you know, the click on the rolling thingy in the middle of the mouse), up & down scrolling. Yes that is right, you can use scrolling on the bar and trigger some action (typically, I use this for setting the volume).
+
+```node
+myBar.enableEvents();
+```
+
+
+### Set Seconds Between Each Refreshes
+
+```typescript
+setSecondsBetweenRefreshes(secondsBetweenRefreshes: number): void;
+```
+
+> **Note**: This will set a timer between refreshes. This means, the higher you will set it, the less resource heavy it will be as it is working with an infinite while loop. Funny fact, I was wrongly adding this feature at the beginning and forgot to uncomment the timeout between refreshes. I was doing okay until I noticed my cpu was at 70°C. Don't be like me. Do not forget to set it and use a decent value. 5 seconds is okay. You could even go higher. Thanks to events (see below), you can manually refresh the bar as needed.
+
+```node
+myBar.setSecondsBetweenRefreshes(5);
+```
+
+### Add block
+
+```typescript
+interface Block {
+  full_text: string;
+  [key: string]: unknown;
+};
+
+addBlock(block: Block): void
+```
+
+> **Note**: This will allow you to add some blocks to be displayed on the i3 status bar. For now, only the `"full_text"` property is required as it is also required in i3. Setting the value to an empty string will make the i3 runtime ignore the block. This is handy when it comes to fetching some data online and sometimes the data is just not there. Or Checking that you are indeed online.
+
+```node
+myBar.addBlock({ full_text: "Hello, i3bar!" });
+```
+
+### Manual rendering
+
+```typescript
+render(): void
+```
+
+> **How it works?**: This will internally use the array of blocks that you registered with the `addBlock` method and send a stringified version of it in the standard output. TLDR; this will just update the status bar following the i3bar protocol. Use this method when you want to manually update the bar when like for instance you want to fetch the weather from a web service but don't know exactly when this will come back as a result. Or any other case you might want to find it useful. Try not to spam it in a while loop or a `setInterval` with a short interval.
+
+### Start the bar 
+
+```typescript
+start(): Promise<void>;
+```
+
+> **How it works?**: This will send the right headers according to the i3 bar protocol and start the infinite loop for sending update of the status bar from time to time. Usually you want to make it the last instructions of your `main.js` script after setting everything.
