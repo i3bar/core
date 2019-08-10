@@ -4,9 +4,20 @@ Core library for creating i3bar using Node.js.
 
 ## Requirements
 
+- GNU/Linux or BSD
 - Node.js
 - NPM
 - i3wm
+
+### Archlinux
+
+```console
+$ pacman -S node npm i3
+```
+
+### Others
+
+If you distribution has the `node`, `npm` and `i3` packages, go for it! Try to compile from sources only when all hope for a pre-compiled package is gone.
 
 ## Usage
 
