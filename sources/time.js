@@ -19,7 +19,7 @@
 
 import { type } from "./type";
 
-class After {
+export class After {
   constructor(delay) {
     if (type(delay) !== "number") {
       throw new TypeError("Expected first argument to be a number.");
@@ -49,7 +49,7 @@ export function after(delay) {
   }
 
   if (arguments.length !== 1) {
-    throw new TypeError("Expected exactly one argument.");
+    throw new Error("Expected exactly one argument.");
   }
 
   return new After(delay);
