@@ -33,10 +33,6 @@ export class After {
   }
 
   get seconds() {
-    if (type(this.delay) !== "number") {
-      throw new TypeError("after must be called with a number.");
-    }
-
     return new Promise((resolve) => {
       setTimeout(resolve, 1000 * this.delay);
     });
