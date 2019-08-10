@@ -5,7 +5,12 @@
   "homepage": "https://github.com/i3bar/core#readme",
   "bugs": "https://github.com/i3bar/core/issues",
   "license": "GPL-3.0-or-later",
-  "keywords": [ "i3", "i3wm", "i3bar", "i3status" ],
+  "keywords": [
+    "i3",
+    "i3wm",
+    "i3bar",
+    "i3status"
+  ],
   "main": "lib/i3bar.js",
   "repository": {
     "type": "git",
@@ -24,6 +29,8 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
     "rollup": "^1.19.4",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-terser": "^5.1.1"
