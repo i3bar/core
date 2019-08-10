@@ -23,6 +23,38 @@ import { after } from "./time";
 import { createInterface } from "readline";
 import EventEmitter from "events";
 
+export class I3Block {
+  constructor(properties) {
+    if (arguments.length !== 1) {
+      throw new Error("Expected exactly one argument.");
+    }
+
+    if (type(properties) !== "object") {
+      throw new TypeError("Expected first argument to be a string.");
+    }
+
+    if (!properties.hasOwnProperty("full_text")) {
+      throw new ReferenceError("Property full_text missing.");
+    }
+
+    if (type(properties.full_text) !== "string") {
+      throw new TypeError("Property full_text expected to be a string.");
+    }
+
+    this.properties = properties;
+  }
+
+  normalize() {
+    return Object.fromEntries(Object.entries(this.properties).map(function([key, value]) {
+      if (type(value) === "function") {
+        return [ key, value() ];
+      }
+
+      return [ key, value ];
+    }));
+  }
+}
+
 export class I3Bar extends EventEmitter {
   constructor() {
     super();
@@ -57,20 +89,12 @@ export class I3Bar extends EventEmitter {
   }
 
   addBlock(block) {
-    if (type(block) !== "object") {
-      throw new TypeError("First argument must be an object.");
-    }
-
     if (arguments.length !== 1) {
       throw new Error("Expect exactly one argument.");
     }
 
-    if (!block.hasOwnProperty("full_text")) {
-      throw new ReferenceError("Block must contain a property called full_text.");
-    }
-
-    if (type(block.full_text) !== "string") {
-      throw new TypeError("Property full_text must be a string.");
+    if (!(block instanceof I3Block)) {
+      throw new TypeError("Expected first argument to be a I3Block.");
     }
 
     this.blocks.push(block);
@@ -81,7 +105,7 @@ export class I3Bar extends EventEmitter {
       throw new Error("Expected exactly zero arguments.");
     }
 
-    process.stdout.write(JSON.stringify(this.blocks));
+    process.stdout.write(JSON.stringify(this.blocks.map(block => block.normalize())));
 
     process.stdout.write(",");
   }
