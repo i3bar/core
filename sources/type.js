@@ -22,5 +22,9 @@
  * @return {string}
  */
 export function type(input) {
+  if (arguments.length > 1) {
+    throw new Error("Expected zero or no more than one argument.");
+  }
+
   return Object.prototype.toString.call(input).replace("[object ", "").replace("]", "").toLowerCase();
 }
