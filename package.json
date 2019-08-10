@@ -1,6 +1,23 @@
 {
   "name": "@i3bar/core",
+  "version": "0.1.0",
+  "description": "Core library for creating i3bar using Node.js.",
+  "homepage": "https://github.com/i3bar/core#readme",
+  "bugs": "https://github.com/i3bar/core/issues",
+  "license": "GPL-3.0-or-later",
+  "keywords": [ "i3", "i3wm", "i3bar", "i3status" ],
   "main": "lib/i3bar.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/i3bar/core.git"
+  },
+  "files": [
+    "lib"
+  ],
+  "author": {
+    "name": "Amin NAIRI",
+    "url": "https://github.com/aminnairi"
+  },
   "scripts": {
     "production": "rollup -c --environment NODE_ENV:production"
   },
