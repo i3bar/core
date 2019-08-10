@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  node:
+    image: node:alpine
+    user: node
+    tty: true
+    stdin_open: true
+    working_dir: /home/node/i3bar/core
+    volumes:
+      - .:/home/node/i3bar/core
+
