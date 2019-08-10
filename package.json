@@ -24,7 +24,7 @@
     "url": "https://github.com/aminnairi"
   },
   "scripts": {
-    "test": "mocha --require @babel/register",
+    "test": "nyc mocha --require @babel/register",
     "production": "rollup -c --environment NODE_ENV:production"
   },
   "devDependencies": {
@@ -33,6 +33,7 @@
     "@babel/register": "^7.5.5",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
     "rollup": "^1.19.4",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-terser": "^5.1.1"
