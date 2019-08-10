@@ -43,7 +43,7 @@ $ $EDITOR package.json
 }
 ```
 
-> **Note**: New to Node.js or JavaScript? That's okay! NPM is the package manager for Node.js. It is like `apt-get` but for JavaScript developers. I intendendly make things easy to follow for people that are not particularily at ease with that platform. Feel free to [open an issue](./issues) if I have not made something clear! Oh and see the `$EDITOR`? I'll use this as a placeholder for whatever text editor you want to use. This means open this file with your editor and add the next lines to it. In fact, you can even use the line as is as there are many chances for your operating system to already have a `$EDITOR` environment variable set to some default editor. But I'll use VIM in my case. Any VIM users in the room? Hello?! :sweat_smile:
+> **Note**: New to Node.js or JavaScript? That's okay! NPM is the package manager for Node.js. It is like `apt-get` but for JavaScript developers. I intentionally made things easy to follow for people that are not particularily at ease with that platform. Feel free to [open an issue](./issues) if I have not made something clear! Oh and see the `$EDITOR`? I'll use this as a placeholder for whatever text editor you want to use. This means open this file with your editor and add the next lines to it. In fact, you can even use the line as is as there are many chances for your operating system to already have a `$EDITOR` environment variable set to some default editor. But I'll use VIM in my case. Any VIM users in the room? Hello?! :sweat_smile:
 
 ### Install the library
 
@@ -179,3 +179,38 @@ start(): Promise<void>;
 ```
 
 > **How it works?**: This will send the right headers according to the i3 bar protocol and start the infinite loop for sending update of the status bar from time to time. Usually you want to make it the last instructions of your `main.js` script after setting everything.
+
+### Events
+
+```typescript
+type I3BarEvent = "leftClick" | "rightClick" | "middleClick" | "mouseWheelUp" | "mouseWheelDown";
+
+interface I3BarListener {
+  (blockName: string): void;
+};
+
+on(event: I3BarEvent, listener: I3BarListener): void;
+```
+
+> **How it works?**: internally, the i3 runtime will send input to the standard input of your script. It is like it is sending you message, and you will have to handle these messages. Or do you. :wink: Because this library would be pointless if it would let you do all the things, events are handled automatically and you have nothing to do other than listen for Node.js events that translate the JSON streaming string sent by the i3 runtime. TLDR; just focus on how to handle these events and don't worry about the rest.
+
+```node
+myBar.on("leftClick", function(blockName) {
+  if (blockName === "volume") {
+    //TODO: mute the volume
+  }
+});
+
+myBar.on("mouseWheelUp", function(blockName) {
+  if (blockName === "volume") {
+    //TODO: increase the volume
+  }
+});
+
+myBar.on("mouseWheelDown", function(blockName) {
+  if (blockName === "volume") {
+    //TODO: decrease the volume
+  }
+});
+
+```
