@@ -32,7 +32,7 @@ $ $EDITOR package.json
 }
 ```
 
-> **Note**: New to Node.js or JavaScript? That's okay! NPM is the package manager for Node.js. It is like `apt-get` but for JavaScript developers. I intendendly make things easy to follow for people that are not particularily at ease with that platform. Feel free to [open an issue](./issues) if I have not made something clear! Oh and see the `$EDITOR`? I'll use this as a placeholder for whatever text editor you want to use. This means open this file with your editor and add the next lines to it. In fact, you can even use the line as is as there are many chances for your operating to already have a `$EDITOR` environment variable set to some default editor. But I'll use VIM in my case. Any VIM users in the room? Hello?! :sweat_smile:
+> **Note**: New to Node.js or JavaScript? That's okay! NPM is the package manager for Node.js. It is like `apt-get` but for JavaScript developers. I intendendly make things easy to follow for people that are not particularily at ease with that platform. Feel free to [open an issue](./issues) if I have not made something clear! Oh and see the `$EDITOR`? I'll use this as a placeholder for whatever text editor you want to use. This means open this file with your editor and add the next lines to it. In fact, you can even use the line as is as there are many chances for your operating system to already have a `$EDITOR` environment variable set to some default editor. But I'll use VIM in my case. Any VIM users in the room? Hello?! :sweat_smile:
 
 ### Install the library
 
@@ -40,7 +40,7 @@ $ $EDITOR package.json
 npm install --save-dev @i3bar/core
 ```
 
-> **Note**: The argument `--save-dev` is here used to say that this library must be installed on our local project. We could also have installed the library globally by issueing the `npm install --global @i3bar/core`, but there are not so much advantages to use a global package other than forgetting it and taking space for nothing on the global NPM packages. If you want to swap `npm` with `yarn` instead, be my guest! To not loose too much people I'll stick with NPM which is the most popular package manager for newcomers.
+> **Note**: The argument `--save-dev` is here used to say that this library must be installed on our local project. We could also have installed the library globally by issueing the `npm install --global @i3bar/core`, but there are not so much advantages to use a global package other than forgetting it and taking space for nothing on the global NPM packages. If you want to swap `npm` with `yarn` instead, be my guest! To not loose too much people I'll stick with `npm` which is the most popular package manager for newcomers.
 
 ### Create the Node.js script
 
@@ -79,7 +79,7 @@ myBar.setSecondsBetweenRefreshes(5);
 myBar.addBlock({ full_text: new Date().toISOString() });
 ```
 
-> **How it works?**: it will use the object you gave and as parameter and will stringified it to send the output to the i3 runtime that will in the end render the bar with these informations periodically. `"full_text"` is mandatory as it is used to render the text you want on your bar. An empty string for that property is a valid value and will simply be ignored by the i3 runtime (i.e. not being displayed on the bar). Values with a leading underscore (`_myCustomProperty`) will also be ignored. See the [i3 bar protocol documentation](https://i3wm.org/docs/i3bar-protocol.html#_blocks_in_detail) for more informations about all the properties you can set. There are many more and you can even customize the colors and background. I'm really terrible at designing interfaces so this example is intended to be simple for simple minded person like me. :smile: Be creative and let me see the result of your hard design work!
+> **How it works?**: it will use the object you gave as parameter and will stringify it to send the output to the i3 runtime that will in the end render the bar with these informations periodically. `"full_text"` is mandatory as it is used to render the text you want on your bar. An empty string for that property is a valid value and will simply be ignored by the i3 runtime (i.e. not being displayed on the bar). Values with a leading underscore (`_myCustomProperty`) will also be ignored. See the [i3 bar protocol documentation](https://i3wm.org/docs/i3bar-protocol.html#_blocks_in_detail) for more informations about all the properties you can set. There are many more and you can even customize the colors and background. I'm really terrible at designing interfaces so this example is intended to be simple for simple minded person like me. :smile: Be creative and let me see the result of your hard design work!
 
 ### Almost there
 
@@ -105,7 +105,7 @@ bar {
 $ i3 reload
 ```
 
-> **Note**: You should now have a basic, but awesome i3bar displayed! I may have forgot something, or made a mistake when publishing the library. If any error occured, or you are unsure about something, please feel free to [open an issue](./issues).
+> **Note**: You should now have a basic, but awesome i3bar displayed! I may have forgotten something, or made a mistake when publishing the library. If any error occured, or you are unsure about something, please feel free to [open an issue](./issues).
 
 ## API
 
