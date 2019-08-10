@@ -43,4 +43,8 @@ describe("time", function() {
   it("should throw an error when instanciating with more than one argument", function() {
     expect(() => new After(1, 2)).to.throw(Error, "Expected exactly one argument.");
   });
+
+  it("should return a promise when using the seconds getter", function() {
+    expect(after(1).seconds).to.be.a("promise"); 
+  });
 });
