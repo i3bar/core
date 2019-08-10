@@ -65,7 +65,7 @@ $ $EDITOR main.js
 ### Import the library
 
 ```node
-const { I3Bar } = require("@i3bar/core");
+const { I3Bar, I3Block } = require("@i3bar/core");
 ```
 
 > **How it works?**: Node.js uses the `require` keyword for inclusion of installed libraries. As you already installed the `@i3bar/core` library, it will be available here. You can also add any other library you would want to use to help you create your awesome i3bar! See [the official NPM website](https://www.npmjs.com/) for a list of popular package to use! You can also use the ECMAScript Modules imports, but I'm trying to focus on newcomers here, remember?
@@ -87,7 +87,7 @@ myBar.setSecondsBetweenRefreshes(5);
 ### Add a block
 
 ```node
-myBar.addBlock({ full_text: new Date().toISOString() });
+myBar.addBlock(new I3Block({ full_text: new Date().toISOString() }));
 ```
 
 > **How it works?**: it will use the object you gave as parameter and will stringify it to send the output to the i3 runtime that will in the end render the bar with these informations periodically. `"full_text"` is mandatory as it is used to render the text you want on your bar. An empty string for that property is a valid value and will simply be ignored by the i3 runtime (i.e. not being displayed on the bar). Values with a leading underscore (`_myCustomProperty`) will also be ignored. See the [i3 bar protocol documentation](https://i3wm.org/docs/i3bar-protocol.html#_blocks_in_detail) for more informations about all the properties you can set. There are many more and you can even customize the colors and background. I'm really terrible at designing interfaces so this example is intended to be simple for simple minded person like me. :smile: Be creative and let me see the result of your hard design work!
@@ -148,20 +148,16 @@ myBar.setSecondsBetweenRefreshes(5);
 ### Add block
 
 ```typescript
-interface Block {
-  full_text: string;
-  [key: string]: unknown;
-};
-
-addBlock(block: Block): void;
+addBlock(block: I3Block): void;
 ```
 
-> **Note**: This will allow you to add some blocks to be displayed on the i3 status bar. For now, only the `"full_text"` property is required as it is also required in i3. Setting the value to an empty string will make the i3 runtime ignore the block. This is handy when it comes to fetching some data online and sometimes the data is just not there. Or Checking that you are indeed online.
+> **Note**: This will allow you to add some blocks to be displayed on the i3 status bar. For now, only the `"full_text"` property is required as it is also required in i3. Setting the value to an empty string will make the i3 runtime ignore the block. This is handy when it comes to fetching some data online and sometimes the data is just not there. Or Checking that you are indeed online. In those cases, you will probably want the `"full_text"` property to be a function so that it is triggered and refreshes the output of the block (in case the output is dynamic, so).
 
 ```node
-myBar.addBlock({ full_text: "Hello, i3bar!" });
-myBar.addBlock({ full_text: "Get creative!" });
-myBar.addBlock({ full_text: new Date().toISOString() });
+myBar.addBlock(new I3Block({ full_text: "Hello, i3bar!" }));
+myBar.addBlock(new I3Block({ full_text: "Get creative!" }));
+myBar.addBlock(new I3Block({ full_text: new Date().toISOString() }));
+myBar.addBlock(new I3Block({ full_text: () => new Date().toISOString() }));
 ```
 
 ### Manual rendering
