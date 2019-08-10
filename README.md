@@ -153,19 +153,21 @@ interface Block {
   [key: string]: unknown;
 };
 
-addBlock(block: Block): void
+addBlock(block: Block): void;
 ```
 
 > **Note**: This will allow you to add some blocks to be displayed on the i3 status bar. For now, only the `"full_text"` property is required as it is also required in i3. Setting the value to an empty string will make the i3 runtime ignore the block. This is handy when it comes to fetching some data online and sometimes the data is just not there. Or Checking that you are indeed online.
 
 ```node
 myBar.addBlock({ full_text: "Hello, i3bar!" });
+myBar.addBlock({ full_text: "Get creative!" });
+myBar.addBlock({ full_text: new Date().toISOString() });
 ```
 
 ### Manual rendering
 
 ```typescript
-render(): void
+render(): void;
 ```
 
 > **How it works?**: This will internally use the array of blocks that you registered with the `addBlock` method and send a stringified version of it in the standard output. TLDR; this will just update the status bar following the i3bar protocol. Use this method when you want to manually update the bar when like for instance you want to fetch the weather from a web service but don't know exactly when this will come back as a result. Or any other case you might want to find it useful. Try not to spam it in a while loop or a `setInterval` with a short interval.
