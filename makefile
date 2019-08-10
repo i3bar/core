@@ -1,4 +1,4 @@
-.PHONY: start stop restart shell install test
+.PHONY: start stop restart shell install test production
 
 install: start
 	docker-compose exec node npm install
@@ -16,3 +16,6 @@ shell: start
 
 test: start
 	docker-compose exec node npm test
+
+production: start
+	docker-compose exec node npm run production
