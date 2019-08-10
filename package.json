@@ -24,11 +24,13 @@
     "url": "https://github.com/aminnairi"
   },
   "scripts": {
+    "test": "mocha --require @babel/register",
     "production": "rollup -c --environment NODE_ENV:production"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
     "rollup": "^1.19.4",
