@@ -77,9 +77,13 @@ export class I3Bar extends EventEmitter {
   }
 
   render() {
-      process.stdout.write(JSON.stringify(this.blocks));
+    if (arguments.length !== 0) {
+      throw new Error("Expected exactly zero arguments.");
+    }
 
-      process.stdout.write(",");
+    process.stdout.write(JSON.stringify(this.blocks));
+
+    process.stdout.write(",");
   }
 
   listenEvents() {
@@ -93,6 +97,7 @@ export class I3Bar extends EventEmitter {
 
     const readline = createInterface({
       input: process.stdin,
+      stdout: process.stdout,
       terminal: true
     });
 
@@ -126,9 +131,14 @@ export class I3Bar extends EventEmitter {
       } catch (error) {
       } finally {
         readline.close();
-        this.listenEvents();
+        /* istanbul ignore next */
+        if (process.env.NODE_ENV !== "test") {
+          this.listenEvents();
+        }
       }
     });
+
+    return readline;
   }
 
   async start() {
@@ -153,6 +163,11 @@ export class I3Bar extends EventEmitter {
       this.render();
 
       await after(this.secondsBetweenRefreshes).seconds;
+
+      /* istanbul ignore next */
+      if (process.env.NODE_ENV === "test") {
+        break;
+      }
     }
   }
 }
