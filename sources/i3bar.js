@@ -47,13 +47,17 @@ export class I3Block {
   }
 
   normalize() {
-    return Object.fromEntries(Object.entries(this.properties).map(function([key, value]) {
+    return Object.entries(this.properties).map(function([key, value]) {
       if (type(value) === "function") {
         return [ key, value() ];
       }
 
       return [ key, value ];
-    }));
+    }).reduce(function(block, [ key, value ]) {
+      return Object.assign(block, {
+        [key]: value
+      });
+    }, {});
   }
 }
 
