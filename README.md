@@ -92,6 +92,24 @@ myBar.addBlock(new I3Block({ full_text: new Date().toISOString() }));
 
 > **How it works?**: it will use the object you gave as parameter and will stringify it to send the output to the i3 runtime that will in the end render the bar with these informations periodically. `"full_text"` is mandatory as it is used to render the text you want on your bar. An empty string for that property is a valid value and will simply be ignored by the i3 runtime (i.e. not being displayed on the bar). Values with a leading underscore (`_myCustomProperty`) will also be ignored. See the [i3 bar protocol documentation](https://i3wm.org/docs/i3bar-protocol.html#_blocks_in_detail) for more informations about all the properties you can set. There are many more and you can even customize the colors and background. I'm really terrible at designing interfaces so this example is intended to be simple for simple minded person like me. :smile: Be creative and let me see the result of your hard design work!
 
+### Or should you?
+
+> **Note**: There is one caveat with the code we wrote earlier: it is static! The text with always show something like `2019-08-11T-08:49:12.302Z` At each tick, and that is not what a clock is good for... We need to specify a function instead of a string to tell the block to re-run the `new Date()` call at each tick of the script.
+
+```node
+myBar.addBlock(new I3Block({ full_text: () => new Date().toISOString() }));
+```
+
+> **How it works?**: The `() => ...` is called an arrow function. For this purpose, you only need to know that this is just a fancy way of writing regular functions. But if you are interested in knowing what are the differences between an arrow function and a regular function, see the [documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) for more details. We could also have written our block that way.
+
+```node
+myBar.addBlock(new I3Block({
+  full_text: function() {
+    return new Date().toISOString();
+  }
+}));
+```
+
 ### Almost there
 
 ```node
