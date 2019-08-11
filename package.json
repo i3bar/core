@@ -26,6 +26,7 @@
   "scripts": {
     "coverage": "cat ./coverage/lcov.info | coveralls",
     "test": "NODE_ENV=test nyc mocha --require @babel/register",
+    "development": "rollup -c --environment NODE_ENV:development",
     "production": "rollup -c --environment NODE_ENV:production"
   },
   "devDependencies": {
