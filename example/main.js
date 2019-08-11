@@ -85,13 +85,25 @@ function getTime() {
   return ` ${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())}`;
 }
 
+async function getBrightness() {
+  const brightness = await getCommandOutput("xbacklight -get");
+
+  if (!brightness) {
+    return " ??%";
+  }
+
+  return ` ${parseInt(brightness)}%`;
+}
+
 const bar = new I3Bar();
 const timeBlock = new I3Block({ full_text: getTime });
 const batteryBlock = new I3Block({ full_text: async () => await getBattery() });
 const volumeBlock = new I3Block({ full_text: async () => await getVolume(), name: "volume" });
+const brightnessBlock = new I3Block({ full_text: async () => await getBrightness(), name: "brightness" });
 
 bar.setSecondsBetweenRefreshes(5);
 bar.enableEvents();
+bar.addBlock(brightnessBlock);
 bar.addBlock(batteryBlock);
 bar.addBlock(volumeBlock);
 bar.addBlock(timeBlock);
@@ -109,6 +121,15 @@ bar.on("mouseWheelUp", function(blockName) {
     exec("pactl set-sink-volume 0 +1%", function() {
       bar.render();
     });
+  } else if (blockName === "brightness") {
+    // I use xorg-xbacklight from the Archlinux official packages to control the brightness of my laptop
+    getCommandOutput("xbacklight -get").then(function(brightness) {
+      if (brightness) {
+        getCommandOutput(`xbacklight -set ${parseInt(brightness) + 10}`).then(function() {
+          bar.render();
+        });
+      }
+    });
   }
 });
 
@@ -116,6 +137,14 @@ bar.on("mouseWheelDown", function(blockName) {
   if (blockName === "volume") {
     exec("pactl set-sink-volume 0 -1%", function() {
       bar.render();
+    });
+  } else if (blockName === "brightness") {
+    getCommandOutput("xbacklight -get").then(function(brightness) {
+      if (brightness && brightness > 10) {
+        getCommandOutput(`xbacklight -set ${parseInt(brightness) - 10}`).then(function() {
+          bar.render();
+        });
+      }
     });
   }
 });
