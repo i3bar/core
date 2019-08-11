@@ -1,7 +1,7 @@
 import "mocha";
 
 import { expect } from "chai";
-import { I3Bar } from "../sources/i3bar";
+import { I3Bar, I3Block } from "../sources/i3bar";
 
 describe("i3bar", function() {
   this.timeout(10 * 1000);
@@ -43,13 +43,13 @@ describe("i3bar", function() {
   it("should throw an error if the argument passed to the addBlock method is not an object", function() {
     const i3Bar = new I3Bar();
 
-    expect(() => i3Bar.addBlock("")).to.throw(TypeError, "First argument must be an object.");
-    expect(() => i3Bar.addBlock(null)).to.throw(TypeError, "First argument must be an object.");
-    expect(() => i3Bar.addBlock(undefined)).to.throw(TypeError, "First argument must be an object.");
-    expect(() => i3Bar.addBlock(true)).to.throw(TypeError, "First argument must be an object.");
-    expect(() => i3Bar.addBlock([])).to.throw(TypeError, "First argument must be an object.");
-    expect(() => i3Bar.addBlock(0)).to.throw(TypeError, "First argument must be an object.");
-    expect(() => i3Bar.addBlock(Symbol())).to.throw(TypeError, "First argument must be an object.");
+    expect(() => i3Bar.addBlock("")).to.throw(TypeError, "Expected first argument to be a I3Block.");
+    expect(() => i3Bar.addBlock(null)).to.throw(TypeError, "Expected first argument to be a I3Block.");
+    expect(() => i3Bar.addBlock(undefined)).to.throw(TypeError, "Expected first argument to be a I3Block.");
+    expect(() => i3Bar.addBlock(true)).to.throw(TypeError, "Expected first argument to be a I3Block.");
+    expect(() => i3Bar.addBlock([])).to.throw(TypeError, "Expected first argument to be a I3Block.");
+    expect(() => i3Bar.addBlock(0)).to.throw(TypeError, "Expected first argument to be a I3Block.");
+    expect(() => i3Bar.addBlock(Symbol())).to.throw(TypeError, "Expected first argument to be a I3Block.");
   });
 
   it("should throw an error if more than one arguments are passed to addBlock", function() {
@@ -61,13 +61,18 @@ describe("i3bar", function() {
   it("should throw an error if trying to add a block that has no full text", function() {
     const i3Bar = new I3Bar();
 
-    expect(() => i3Bar.addBlock({})).to.throw(ReferenceError, "Block must contain a property called full_text.");
+    expect(() => i3Bar.addBlock(new I3Block({}))).to.throw(ReferenceError, "Property full_text missing.");
   });
 
-  it("should throw an error if the full text is not a string when trying to add a block", function() {
+  it("should throw an error if the full text is not a string nor a function when trying to add a block", function() {
     const i3Bar = new I3Bar();
 
-    expect(() => i3Bar.addBlock({ full_text: 0 })).to.throw(TypeError, "Property full_text must be a string.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: true }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: 0 }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: null }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: undefined }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: [] }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: {} }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
   });
 
   it("should throw an error when trying to add arguments to the render method", function() {
@@ -114,7 +119,7 @@ describe("i3bar", function() {
     const i3Bar = new I3Bar();
 
     i3Bar.setSecondsBetweenRefreshes(5);
-    i3Bar.addBlock({ full_text: "test" });
+    i3Bar.addBlock(new I3Block({ full_text: "test" }));
     i3Bar.start();
 
     done();
@@ -137,7 +142,7 @@ describe("i3bar", function() {
 
     i3Bar.setSecondsBetweenRefreshes(5);
     i3Bar.enableEvents();
-    i3Bar.addBlock({ full_text: "something", name: "volume" });
+    i3Bar.addBlock(new I3Block({ full_text: "something", name: "volume" }));
 
     i3Bar.on("leftClick", function() {
       done();
@@ -154,7 +159,7 @@ describe("i3bar", function() {
 
     i3Bar.setSecondsBetweenRefreshes(5);
     i3Bar.enableEvents();
-    i3Bar.addBlock({ full_text: "something", name: "volume" });
+    i3Bar.addBlock(new I3Block({ full_text: "something", name: "volume" }));
 
     i3Bar.on("rightClick", function() {
       done();
@@ -171,7 +176,7 @@ describe("i3bar", function() {
 
     i3Bar.setSecondsBetweenRefreshes(5);
     i3Bar.enableEvents();
-    i3Bar.addBlock({ full_text: "something", name: "volume" });
+    i3Bar.addBlock(new I3Block({ full_text: "something", name: "volume" }));
 
     i3Bar.on("middleClick", function() {
       done();
@@ -188,7 +193,7 @@ describe("i3bar", function() {
 
     i3Bar.setSecondsBetweenRefreshes(5);
     i3Bar.enableEvents();
-    i3Bar.addBlock({ full_text: "something", name: "volume" });
+    i3Bar.addBlock(new I3Block({ full_text: "something", name: "volume" }));
 
     i3Bar.on("mouseWheelUp", function() {
       done();
@@ -205,7 +210,7 @@ describe("i3bar", function() {
 
     i3Bar.setSecondsBetweenRefreshes(5);
     i3Bar.enableEvents();
-    i3Bar.addBlock({ full_text: "something", name: "volume" });
+    i3Bar.addBlock(new I3Block({ full_text: "something", name: "volume" }));
 
     i3Bar.on("mouseWheelDown", function() {
       done();
@@ -222,7 +227,7 @@ describe("i3bar", function() {
 
     i3Bar.setSecondsBetweenRefreshes(5);
     i3Bar.enableEvents();
-    i3Bar.addBlock({ full_text: "something", name: "volume" });
+    i3Bar.addBlock(new I3Block({ full_text: "something", name: "volume" }));
 
     i3Bar.on("mouseWheelDown", function() {
       done();
@@ -232,5 +237,24 @@ describe("i3bar", function() {
 
     standardInput.write(`${JSON.stringify({ name: "volume" })}\n`);
     standardInput.close();
+  });
+
+  it("should throw an error when trying to instanciate an i3 block without parameter", function() {
+    expect(() => new I3Block()).to.throw(Error, "Expected exactly one argument.");
+  });
+
+  it("should throw an error when trying to instanciate an i3 block without an object", function() {
+    expect(() => new I3Block("")).to.throw(Error, "Expected first argument to be a string.");
+    expect(() => new I3Block(0)).to.throw(Error, "Expected first argument to be a string.");
+    expect(() => new I3Block(null)).to.throw(Error, "Expected first argument to be a string.");
+    expect(() => new I3Block(undefined)).to.throw(Error, "Expected first argument to be a string.");
+    expect(() => new I3Block(true)).to.throw(Error, "Expected first argument to be a string.");
+    expect(() => new I3Block([])).to.throw(Error, "Expected first argument to be a string.");
+    expect(() => new I3Block(() => {})).to.throw(Error, "Expected first argument to be a string.");
+  });
+
+  it("should return the good value for a full_text property when using a function for the instanciation of a i3 block", function() {
+    const i3Block = new I3Block({ full_text: () => "hello" });
+    expect(i3Block.normalize()).to.deep.equal({ full_text: "hello" });
   });
 });
