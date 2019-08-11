@@ -142,6 +142,10 @@ $ i3 reload
 
 > **Note**: You should now have a basic, but awesome i3bar displayed! I may have forgotten something, or made a mistake when publishing the library. If any error occured, or you are unsure about something, please feel free to [open an issue](./issues).
 
+### Done!
+
+Congratulations! You now are a Node.js developper. :smile: You can find some examples in the [example](./example) folder. Fun fact: this is my own configuration that I am using right now. Feel free to make a better one by customizing your colors, fonts, icons. You could event fetch the weather from an API? Actually I'm gonna do that. But not today, today is nap day. :blush:
+
 ## API
 
 ### Enable Events
