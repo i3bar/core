@@ -67,18 +67,23 @@ describe("i3bar", function() {
   it("should throw an error if the full text is not a string nor a function when trying to add a block", function() {
     const i3Bar = new I3Bar();
 
-    expect(() => i3Bar.addBlock(new I3Block({ full_text: true }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
-    expect(() => i3Bar.addBlock(new I3Block({ full_text: 0 }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
-    expect(() => i3Bar.addBlock(new I3Block({ full_text: null }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
-    expect(() => i3Bar.addBlock(new I3Block({ full_text: undefined }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
-    expect(() => i3Bar.addBlock(new I3Block({ full_text: [] }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
-    expect(() => i3Bar.addBlock(new I3Block({ full_text: {} }))).to.throw(TypeError, "Property full_text expected to be a string or a function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: true }))).to.throw(TypeError, "Property full_text expected to be a string, a function or an asynchronous function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: 0 }))).to.throw(TypeError, "Property full_text expected to be a string, a function or an asynchronous function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: null }))).to.throw(TypeError, "Property full_text expected to be a string, a function or an asynchronous function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: undefined }))).to.throw(TypeError, "Property full_text expected to be a string, a function or an asynchronous function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: [] }))).to.throw(TypeError, "Property full_text expected to be a string, a function or an asynchronous function.");
+    expect(() => i3Bar.addBlock(new I3Block({ full_text: {} }))).to.throw(TypeError, "Property full_text expected to be a string, a function or an asynchronous function.");
   });
 
-  it("should throw an error when trying to add arguments to the render method", function() {
+  it("should throw an error when trying to add arguments to the render method", function(done) {
     const i3Bar = new I3Bar();
 
-    expect(() => i3Bar.render(0)).to.throw(Error, "Expected exactly zero arguments.");
+    i3Bar.render(0).then(function() {
+      done("failed");
+    }).catch(function() {
+      done();
+    });
+
   });
 
   it("should throw an error if trying to add arguments to the listenEvents method", function() {
@@ -253,8 +258,25 @@ describe("i3bar", function() {
     expect(() => new I3Block(() => {})).to.throw(Error, "Expected first argument to be a string.");
   });
 
-  it("should return the good value for a full_text property when using a function for the instanciation of a i3 block", function() {
+  it("should return the good value for a full_text property when using a function for the instanciation of a i3 block", function(done) {
     const i3Block = new I3Block({ full_text: () => "hello" });
-    expect(i3Block.normalize()).to.deep.equal({ full_text: "hello" });
+
+    i3Block.normalize().then(function(block) {
+      expect(block).to.deep.equal({ full_text: "hello" });
+      done();
+    }).catch(function() {
+      done("failed");
+    });
+  });
+
+  it("should return the good value for a full_text property when using an asynchronous function for the instanciation of a i3 block", function(done) {
+    const i3Block = new I3Block({ full_text: async () => await Promise.resolve("hello") });
+
+    i3Block.normalize().then(function(block) {
+      expect(block).to.deep.equal({ full_text: "hello" });
+      done();
+    }).catch(function() {
+      done("failed");
+    });
   });
 });
