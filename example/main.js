@@ -116,36 +116,40 @@ bar.on("leftClick", function(blockName) {
   }
 });
 
-bar.on("mouseWheelUp", function(blockName) {
+bar.on("mouseWheelUp", async function(blockName) {
   if (blockName === "volume") {
-    exec("pactl set-sink-volume 0 +1%", function() {
+    try {
+      await getCommandOutput("pactl set-sink-volume 0 +1%");
       bar.render();
-    });
+    } catch (error) {}
   } else if (blockName === "brightness") {
-    // I use xorg-xbacklight from the Archlinux official packages to control the brightness of my laptop
-    getCommandOutput("xbacklight -get").then(function(brightness) {
+    try {
+      // I use xorg-xbacklight from the Archlinux official packages to control the brightness of my laptop
+      const brightness = await getCommandOutput("xbacklight -get")
+
       if (brightness) {
-        getCommandOutput(`xbacklight -set ${parseInt(brightness) + 10}`).then(function() {
-          bar.render();
-        });
+        await getCommandOutput(`xbacklight -set ${parseInt(brightness) + 10}`)
+        bar.render();
       }
-    });
+    } catch (error) {}
   }
 });
 
-bar.on("mouseWheelDown", function(blockName) {
+bar.on("mouseWheelDown", async function(blockName) {
   if (blockName === "volume") {
-    exec("pactl set-sink-volume 0 -1%", function() {
+    try {
+      await getCommandOutput("pactl set-sink-volume 0 -1%");
       bar.render();
-    });
+    } catch (error) {}
   } else if (blockName === "brightness") {
-    getCommandOutput("xbacklight -get").then(function(brightness) {
+    try {
+      const brightness = await getCommandOutput("xbacklight -get")
+
       if (brightness && brightness > 10) {
-        getCommandOutput(`xbacklight -set ${parseInt(brightness) - 10}`).then(function() {
-          bar.render();
-        });
+        await getCommandOutput(`xbacklight -set ${parseInt(brightness) - 10}`)
+        bar.render();
       }
-    });
+    } catch (error) {}
   }
 });
 
