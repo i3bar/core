@@ -159,7 +159,7 @@ describe("i3bar", function() {
     standardInput.close();
   });
 
-  it("should trigger a left click when clicking on the bar", function(done) {
+  it("should trigger a right click when clicking on the bar", function(done) {
     const i3Bar = new I3Bar();
 
     i3Bar.setSecondsBetweenRefreshes(5);
@@ -172,7 +172,7 @@ describe("i3bar", function() {
 
     const standardInput = i3Bar.listenEvents();
 
-    standardInput.write(`${JSON.stringify({ name: "volume", button: 2 })}\n`);
+    standardInput.write(`${JSON.stringify({ name: "volume", button: 3 })}\n`);
     standardInput.close();
   });
 
@@ -189,7 +189,7 @@ describe("i3bar", function() {
 
     const standardInput = i3Bar.listenEvents();
 
-    standardInput.write(`${JSON.stringify({ name: "volume", button: 3 })}\n`);
+    standardInput.write(`${JSON.stringify({ name: "volume", button: 2 })}\n`);
     standardInput.close();
   });
 
@@ -278,5 +278,34 @@ describe("i3bar", function() {
     }).catch(function() {
       done("failed");
     });
+  });
+
+  it("should throw an error when trying to update a block property that is not a string", function() {
+    const i3Block = new I3Block({ full_text: "" });
+
+    expect(() => i3Block.update(1, "")).to.throw(TypeError, "The property to update must be a string.");;
+    expect(() => i3Block.update(true, "")).to.throw(TypeError, "The property to update must be a string.");;
+    expect(() => i3Block.update(null, "")).to.throw(TypeError, "The property to update must be a string.");;
+    expect(() => i3Block.update(undefined, "")).to.throw(TypeError, "The property to update must be a string.");;
+    expect(() => i3Block.update(Symbol(), "")).to.throw(TypeError, "The property to update must be a string.");;
+    expect(() => i3Block.update([], "")).to.throw(TypeError, "The property to update must be a string.");;
+    expect(() => i3Block.update({}, "")).to.throw(TypeError, "The property to update must be a string.");;
+    expect(() => i3Block.update(() => {}, "")).to.throw(TypeError, "The property to update must be a string.");;
+  });
+
+  it("should throw an error when trying to update without providing exactly two arguments", function() {
+    const i3Block = new I3Block({ full_text: "" });
+
+    expect(() => i3Block.update()).to.throw(Error, "Expected exactly two arguments.");
+    expect(() => i3Block.update("full_text")).to.throw(Error, "Expected exactly two arguments.");
+    expect(() => i3Block.update("full_text", "", "")).to.throw(Error, "Expected exactly two arguments.");
+  });
+
+  it("should update the block property correctly", async function() {
+    const i3Block = new I3Block({ full_text: "not updated" });
+
+    i3Block.update("full_text", "updated");
+
+    expect(await i3Block.normalize()).to.deep.equal({ full_text: "updated" });
   });
 });
