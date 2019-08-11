@@ -39,25 +39,29 @@ export class I3Block {
 
     const typeFullText = type(properties.full_text);
 
-    if (typeFullText !== "string" && typeFullText !== "function") {
-      throw new TypeError("Property full_text expected to be a string or a function.");
+    if (typeFullText !== "string" && typeFullText !== "function" && typeFullText !== "asyncfunction") {
+      throw new TypeError("Property full_text expected to be a string, a function or an asynchronous function.");
     }
 
     this.properties = properties;
   }
 
-  normalize() {
-    return Object.entries(this.properties).map(function([key, value]) {
-      if (type(value) === "function") {
-        return [ key, value() ];
-      }
+  async normalize() {
+    const block = {};
 
-      return [ key, value ];
-    }).reduce(function(block, [ key, value ]) {
-      return Object.assign(block, {
-        [key]: value
-      });
-    }, {});
+    for (const [ key, value ] of Object.entries(this.properties)) {
+      const typeOfValue = type(value);
+
+      if (typeOfValue === "function") {
+        block[key] = value();
+      } else if (typeOfValue === "asyncfunction") {
+        block[key] = await value();
+      } else {
+        block[key] = value;
+      }
+    }
+
+    return block;
   }
 }
 
@@ -106,13 +110,18 @@ export class I3Bar extends EventEmitter {
     this.blocks.push(block);
   }
 
-  render() {
+  async render() {
     if (arguments.length !== 0) {
       throw new Error("Expected exactly zero arguments.");
     }
 
-    process.stdout.write(JSON.stringify(this.blocks.map(block => block.normalize())));
+    const normalizedBlocks = [];
 
+    for (const block of this.blocks) {
+      normalizedBlocks.push(await block.normalize());
+    }
+
+    process.stdout.write(JSON.stringify(normalizedBlocks));
     process.stdout.write(",");
   }
 
