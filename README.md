@@ -4,12 +4,16 @@
 
 Core library for creating i3bar using Node.js.
 
+![i3bar](https://i.ibb.co/B2T8tYz/i3bar-core.png)
+
 ## Requirements
 
 - GNU/Linux or BSD
 - Node.js
 - NPM
 - i3wm
+
+> **Note**: I use `ttf-font-awesome` for the icons you see in the preview above and `ttf-fira-code` for the font. This is not a requirement but it adds a cool look to the bar. There are many packages for icons, emojis, fonts, etc... Try to find the one that fits your needs!
 
 ### Archlinux
 
