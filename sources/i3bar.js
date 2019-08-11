@@ -33,7 +33,7 @@ export class I3Block {
       throw new TypeError("Expected first argument to be a string.");
     }
 
-    if (!properties.hasOwnProperty("full_text")) {
+    if (!Object.prototype.hasOwnProperty.call(properties, "full_text")) {
       throw new ReferenceError("Property full_text missing.");
     }
 
@@ -107,7 +107,7 @@ export class I3Bar extends EventEmitter {
       throw new Error("Expected exactly one argument.");
     }
 
-    this.secondsBetweenRefreshes = secondsBetweenRefreshes
+    this.secondsBetweenRefreshes = secondsBetweenRefreshes;
   }
 
   addBlock(block) {
@@ -155,30 +155,30 @@ export class I3Bar extends EventEmitter {
       try {
         const event = JSON.parse(line.replace(/^,/, ""));
 
-        if (event.hasOwnProperty("button") && event.hasOwnProperty("name")) {
+        if (Object.prototype.hasOwnProperty.call(event, "button") && Object.prototype.hasOwnProperty.call(event, "name")) {
           switch(event.button) {
-            case 1:
-              this.emit("leftClick", event.name);
-              break;
+          case 1:
+            this.emit("leftClick", event.name);
+            break;
 
-            case 2:
-              this.emit("middleClick", event.name);
-              break;
+          case 2:
+            this.emit("middleClick", event.name);
+            break;
 
-            case 3:
-              this.emit("rightClick", event.name);
-              break;
+          case 3:
+            this.emit("rightClick", event.name);
+            break;
 
-            case 4:
-              this.emit("mouseWheelUp", event.name);
-              break;
+          case 4:
+            this.emit("mouseWheelUp", event.name);
+            break;
 
-            case 5:
-              this.emit("mouseWheelDown", event.name);
-              break;
+          case 5:
+            this.emit("mouseWheelDown", event.name);
+            break;
           }
         }
-      } catch (error) {
+      } catch (error) { // eslint-disable-line 
       } finally {
         readline.close();
         /* istanbul ignore next */
@@ -209,7 +209,7 @@ export class I3Bar extends EventEmitter {
 
     process.stdout.write("[[],");
 
-    while (true) {
+    while (true) { // eslint-disable-line
       this.render();
 
       await after(this.secondsBetweenRefreshes).seconds;
