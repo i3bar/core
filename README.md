@@ -1,5 +1,7 @@
 # core
 
+![Coveralls github branch](https://img.shields.io/coveralls/github/i3bar/core/master)
+
 Core library for creating i3bar using Node.js.
 
 ## Requirements
