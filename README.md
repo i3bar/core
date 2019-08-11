@@ -214,3 +214,9 @@ myBar.on("mouseWheelDown", function(blockName) {
 });
 
 ```
+
+> **Note**: Oh and see the `blockName` and the test we made there like `if (blockName === "myBlock")`? You must provide a name to the block you want to have events attached to. Otherwise, you will never happen to pass through the if statement.
+
+```node
+myBar.addBlock(new I3Block({ full_text: "...", name: "volume" });
+```
