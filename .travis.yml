@@ -1,0 +1,14 @@
+language: node_js
+
+node_js:
+  - "stable"
+
+branches:
+  only:
+    - master
+
+git:
+  submodules: false
+
+after_success:
+  - make coverage
