@@ -178,6 +178,7 @@ myBar.addBlock(new I3Block({ full_text: "Hello, i3bar!" }));
 myBar.addBlock(new I3Block({ full_text: "Get creative!" }));
 myBar.addBlock(new I3Block({ full_text: new Date().toISOString() }));
 myBar.addBlock(new I3Block({ full_text: () => new Date().toISOString() }));
+myBar.addBlock(new I3Block({ full_text: async () => await getBattery() }));
 ```
 
 ### Manual rendering
