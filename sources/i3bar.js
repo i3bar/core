@@ -47,6 +47,14 @@ export class I3Block {
   }
 
   update(property, newValue) {
+    if (arguments.length !== 2) {
+      throw new Error("Expected exactly two arguments.");
+    }
+
+    if (type(property) !== "string") {
+      throw new TypeError("The property to update must be a string.");
+    }
+
     this.properties[property] = newValue;
   }
 
