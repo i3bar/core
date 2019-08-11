@@ -14,5 +14,6 @@ install:
   - npm ci
 
 script:
+  - npm run production
   - npm test
   - npm run coverage
