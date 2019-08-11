@@ -37,8 +37,10 @@ export class I3Block {
       throw new ReferenceError("Property full_text missing.");
     }
 
-    if (type(properties.full_text) !== "string") {
-      throw new TypeError("Property full_text expected to be a string.");
+    const typeFullText = type(properties.full_text);
+
+    if (typeFullText !== "string" && typeFullText !== "function") {
+      throw new TypeError("Property full_text expected to be a string or a function.");
     }
 
     this.properties = properties;
