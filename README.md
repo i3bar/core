@@ -181,6 +181,22 @@ myBar.addBlock(new I3Block({ full_text: () => new Date().toISOString() }));
 myBar.addBlock(new I3Block({ full_text: async () => await getBattery() }));
 ```
 
+### Programmatically update blocks
+
+```typescript
+update(property: string, newValue: string): void;
+```
+
+> **Note**: Use this method in case you want to programmatically update the block. I like to use this one when fetching the weather from OpenWeatherMap. There is no need to update the weather every 5 seconds, so I use a timer of 10 minutes, which is enough for the API to update the weather and prevent some unecessary network calls. If you are good with the refresh time of your bar, you probably wont need this method and can stick with functions or asynchronous functions to update the block.
+
+```node
+const awesomeBlock = new I3Block({ full_text: "Are you awesome?" });
+
+myBar.addBlock(awesomeBlock);
+
+setTimeout(() => awesomeBlock.update("full_text", "Yes, you are"), 10 * 1000); // after 10 seconds
+```
+
 ### Manual rendering
 
 ```typescript
