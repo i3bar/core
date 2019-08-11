@@ -2,6 +2,8 @@
 
 [![Coveralls github branch](https://img.shields.io/coveralls/github/i3bar/core/master)](https://coveralls.io/github/i3bar/core?branch=master)
 
+[![Travis (.org) branch](https://img.shields.io/travis/i3bar/core/master)](https://travis-ci.org/i3bar/core)
+
 Core library for creating i3bar using Node.js.
 
 ![i3bar](https://i.ibb.co/B2T8tYz/i3bar-core.png)
