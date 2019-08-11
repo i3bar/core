@@ -46,6 +46,10 @@ export class I3Block {
     this.properties = properties;
   }
 
+  update(property, newValue) {
+    this.properties[property] = newValue;
+  }
+
   async normalize() {
     const block = {};
 
@@ -136,11 +140,10 @@ export class I3Bar extends EventEmitter {
 
     const readline = createInterface({
       input: process.stdin,
-      stdout: process.stdout,
       terminal: true
     });
 
-    readline.on("line", async (line) => {
+    readline.on("line", line => {
       try {
         const event = JSON.parse(line.replace(/^,/, ""));
 
@@ -151,11 +154,11 @@ export class I3Bar extends EventEmitter {
               break;
 
             case 2:
-              this.emit("rightClick", event.name);
+              this.emit("middleClick", event.name);
               break;
 
             case 3:
-              this.emit("middleClick", event.name);
+              this.emit("rightClick", event.name);
               break;
 
             case 4:
