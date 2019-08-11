@@ -2,34 +2,82 @@ const { I3Bar, I3Block } = require("../lib/i3bar.js");
 const { readFile } = require("fs");
 const { exec } = require("child_process");
 
-function getBattery() {
-  return new Promise(function(resolve) {
-    readFile("/sys/class/power_supply/BAT0/capacity", function(error, battery) {
-      if (error) {
-        resolve(" ??%");
-      } else {
-        resolve(` ${battery.toString().trim()}%`);
-      }
-    });
-  });
-}
-
-function getVolume() {
-  return new Promise(function(resolve) {
-    // pactl is the Pulse Audio Control CLI, replace this with your own audio control CLI!
-    exec("pactl list sinks", function(exception, output, error) {
-      if (exception || error) {
-        resolve(" ??%");
-      } else {
-        resolve(` ${output.match(/\d+%/)[0].trim()}`);
-      }
-    });
-  });
-}
-
 function addLeadingZero(input) {
   return input.toString().padStart(2, "0");
 }
+
+function getFileContent(path) {
+  return new Promise(function(resolve) {
+    readFile(path, function(error, data) {
+      if (error) {
+        resolve(false);
+      } else {
+        resolve(data.toString().trim());
+      }
+    });
+  });
+}
+
+function getCommandOutput(command) {
+  return new Promise(function(resolve) {
+    exec(command, function(exception, output, error) {
+      if (exception || error) {
+        resolve(false);
+      } else {
+        resolve(output.toString().trim());
+      }
+    });
+  });
+}
+
+async function getBattery() {
+  const [ battery, status ] = await Promise.all([
+    getFileContent("/sys/class/power_supply/BAT0/capacity"),
+    getFileContent("/sys/class/power_supply/BAT0/status")
+  ]);
+
+  if (!battery || !status) {
+    // I'm using ttf-font-awesome from the Archlinux community packages, feel free to use another icon set!
+    return " ??%";
+  }
+
+  if (status !== "Discharging" && battery <= 99) {
+    return ` ${battery}%`;
+  }
+
+  if (battery <= 25) {
+    return ` ${battery}%`;
+  } 
+
+  if (battery <= 50) {
+    return ` ${battery}%`;
+  }
+
+  if (battery <= 75) {
+    return ` ${battery}%`;
+  }
+
+  return ` ${battery}%`;
+}
+
+async function getVolume() {
+  // pactl is the Pulse Audio Control CLI, replace this with your own audio control CLI!
+  const output = await getCommandOutput("pactl list sinks")
+
+  if (!output) {
+    return " ??%";
+  }
+
+  const volume = output.match(/\d+%/)[0].trim();
+  const muted = output.match(/(?<=Mute:\s)\w+/)[0].trim();
+
+  if (muted === "yes" || volume === "0%") {
+    return ` ${volume}`;
+  }
+
+  return ` ${volume}`;
+}
+
 
 function getTime() {
   const date = new Date();
