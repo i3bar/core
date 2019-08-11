@@ -10,5 +10,9 @@ branches:
 git:
   submodules: false
 
-after_success:
+install:
+  - npm ci
+
+script:
+  - make test
   - make coverage
