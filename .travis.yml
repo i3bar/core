@@ -14,5 +14,5 @@ install:
   - npm ci
 
 script:
-  - make test
-  - make coverage
+  - npm test
+  - npm run coverage
