@@ -5,7 +5,7 @@
 
 Core library for creating i3bar using Node.js.
 
-![i3bar](https://i.ibb.co/B2T8tYz/i3bar-core.png)
+![i3bar](https://i.ibb.co/WvZM1K8/i3bar-core-screenshot.png)
 
 ## Requirements
 
