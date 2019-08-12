@@ -101,7 +101,7 @@ myBar.addBlock(new I3Block({ full_text: new Date().toISOString() }));
 
 ### Or should you?
 
-> **Note**: There is one caveat with the code we wrote earlier: it is static! The text with always show something like `2019-08-11T-08:49:12.302Z` At each tick, and that is not what a clock is good for... We need to specify a function instead of a string to tell the block to re-run the `new Date()` call at each tick of the script.
+> **Note**: There is one caveat with the code we wrote earlier: it is static! The text will always show something like `2019-08-11T-08:49:12.302Z` At each tick, and that is not what a clock is good for... We need to specify a function instead of a string to tell the block to re-run the `new Date()` call at each tick of the script.
 
 ```node
 myBar.addBlock(new I3Block({ full_text: () => new Date().toISOString() }));
