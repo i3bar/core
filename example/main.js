@@ -1,6 +1,7 @@
 const { I3Bar, I3Block } = require("../lib/i3bar.js");
 const { readFile } = require("fs");
 const { exec } = require("child_process");
+const { userInfo } = require("os");
 
 function addLeadingZero(input) {
   return input.toString().padStart(2, "0");
@@ -95,11 +96,16 @@ async function getBrightness() {
   return ` ${parseInt(brightness)}%`;
 }
 
+function getOsUsername() {
+  return ` ${userInfo().username}`;
+}
+
 const bar = new I3Bar();
 const timeBlock = new I3Block({ full_text: getTime });
 const batteryBlock = new I3Block({ full_text: getBattery });
 const volumeBlock = new I3Block({ full_text: getVolume, name: "volume" });
 const brightnessBlock = new I3Block({ full_text: getBrightness, name: "brightness" });
+const userBlock = new I3Block({ full_text: getOsUsername });
 
 bar.setSecondsBetweenRefreshes(5);
 bar.enableEvents();
@@ -107,6 +113,7 @@ bar.addBlock(brightnessBlock);
 bar.addBlock(batteryBlock);
 bar.addBlock(volumeBlock);
 bar.addBlock(timeBlock);
+bar.addBlock(userBlock);
 
 bar.on("leftClick", function(blockName) {
   if (blockName === "volume") {
