@@ -209,7 +209,7 @@ export class I3Bar extends EventEmitter {
 
     process.stdout.write("[[],");
 
-    while (true) { // eslint-disable-line
+    while (true) {
       this.render();
 
       await after(this.secondsBetweenRefreshes).seconds;
