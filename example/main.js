@@ -97,9 +97,9 @@ async function getBrightness() {
 
 const bar = new I3Bar();
 const timeBlock = new I3Block({ full_text: getTime });
-const batteryBlock = new I3Block({ full_text: async () => await getBattery() });
-const volumeBlock = new I3Block({ full_text: async () => await getVolume(), name: "volume" });
-const brightnessBlock = new I3Block({ full_text: async () => await getBrightness(), name: "brightness" });
+const batteryBlock = new I3Block({ full_text: getBattery });
+const volumeBlock = new I3Block({ full_text: getVolume, name: "volume" });
+const brightnessBlock = new I3Block({ full_text: getBrightness, name: "brightness" });
 
 bar.setSecondsBetweenRefreshes(5);
 bar.enableEvents();
