@@ -155,7 +155,7 @@ describe("i3bar", function() {
 
     const standardInput = i3Bar.listenEvents();
 
-    standardInput.write(`${JSON.stringify({ name: "volume", button: 1 })}\n`);
+    standardInput.write(`${JSON.stringify({ name: "volume", button: 1, modifiers: [] })}\n`);
     standardInput.close();
   });
 
@@ -172,7 +172,7 @@ describe("i3bar", function() {
 
     const standardInput = i3Bar.listenEvents();
 
-    standardInput.write(`${JSON.stringify({ name: "volume", button: 3 })}\n`);
+    standardInput.write(`${JSON.stringify({ name: "volume", button: 3, modifiers: [] })}\n`);
     standardInput.close();
   });
 
@@ -189,7 +189,7 @@ describe("i3bar", function() {
 
     const standardInput = i3Bar.listenEvents();
 
-    standardInput.write(`${JSON.stringify({ name: "volume", button: 2 })}\n`);
+    standardInput.write(`${JSON.stringify({ name: "volume", button: 2, modifiers: [] })}\n`);
     standardInput.close();
   });
 
@@ -206,7 +206,7 @@ describe("i3bar", function() {
 
     const standardInput = i3Bar.listenEvents();
 
-    standardInput.write(`${JSON.stringify({ name: "volume", button: 4 })}\n`);
+    standardInput.write(`${JSON.stringify({ name: "volume", button: 4, modifiers: [] })}\n`);
     standardInput.close();
   });
 
@@ -223,7 +223,7 @@ describe("i3bar", function() {
 
     const standardInput = i3Bar.listenEvents();
 
-    standardInput.write(`${JSON.stringify({ name: "volume", button: 5 })}\n`);
+    standardInput.write(`${JSON.stringify({ name: "volume", button: 5, modifiers: [] })}\n`);
     standardInput.close();
   });
 
