@@ -4,4 +4,4 @@
 
 **0.2.0**:
 
-- Added a way to get the modifiers keys with the event (#1).
+- Added a way to get the modifiers keys with the event ([#2](./pull/2)).
