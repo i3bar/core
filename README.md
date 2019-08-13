@@ -262,3 +262,13 @@ myBar.on("mouseWheelDown", function(blockName) {
 ```node
 myBar.addBlock(new I3Block({ full_text: "...", name: "volume" });
 ```
+
+> **Note**: You could even have modifiers attached to your blocks! What's a modifier? Let's say you are clicking on your block. That is a `"leftClick"` event. Now let's say you are clicking on your block and hitting the `"Control"` key simultaneously. That is also a `"leftClick"`! How to differenciate the both? By using modifiers! So in the end, modifiers are those keys that you press at the time the event is fired. Honestly, I do not use this too much and there is not an exhaustive list of modifiers on the [documentation](https://i3wm.org/docs/i3bar-protocol.html#_click_events) unfortunately. You'll have to trust me that you can use either `"Control"` and/or `"Shift"` as well as the modifiers that you specified in your i3 configuration. Feel free to open issue about that so that we can discuss about it and find a solution to your problem!
+
+```javascript
+myBar.on("leftClick", function(blockName, modifiers) {
+  if (blockName === "myBlock" && modifiers.includes("Shift")) {
+    // TODO: do something here...
+  }
+});
+```
