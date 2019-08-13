@@ -289,12 +289,7 @@ module.exports = {
       "error"
     ],
     "no-magic-numbers": [
-      "error",
-      {
-        "ignoreArrayIndexes": false,
-        "enforceConst": true,
-        "detectObjects": true
-      }
+      "off"
     ],
     "no-multi-spaces": [
       "error",
