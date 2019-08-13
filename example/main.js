@@ -1,74 +1,51 @@
-const { I3Bar, I3Block } = require("../lib/i3bar.js");
-const { readFile } = require("fs");
-const { exec } = require("child_process");
-
-function getBattery() {
-  return new Promise(function(resolve) {
-    readFile("/sys/class/power_supply/BAT0/capacity", function(error, battery) {
-      if (error) {
-        resolve(" ??%");
-      } else {
-        resolve(` ${battery.toString().trim()}%`);
-      }
-    });
-  });
-}
-
-function getVolume() {
-  return new Promise(function(resolve) {
-    // pactl is the Pulse Audio Control CLI, replace this with your own audio control CLI!
-    exec("pactl list sinks", function(exception, output, error) {
-      if (exception || error) {
-        resolve(" ??%");
-      } else {
-        resolve(` ${output.match(/\d+%/)[0].trim()}`);
-      }
-    });
-  });
-}
-
-function addLeadingZero(input) {
-  return input.toString().padStart(2, "0");
-}
-
-function getTime() {
-  const date = new Date();
-
-  return ` ${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())}`;
-}
+const { I3Bar } = require("../lib/i3bar.js");
+const { getCommandOutput } = require("./utils");
+const { timeBlock, batteryBlock, volumeBlock, brightnessBlock, userBlock, networkBlock } = require("./blocks");
 
 const bar = new I3Bar();
-const timeBlock = new I3Block({ full_text: getTime });
-const batteryBlock = new I3Block({ full_text: async () => await getBattery() });
-const volumeBlock = new I3Block({ full_text: async () => await getVolume(), name: "volume" });
 
 bar.setSecondsBetweenRefreshes(5);
 bar.enableEvents();
+bar.addBlock(networkBlock);
+bar.addBlock(brightnessBlock);
 bar.addBlock(batteryBlock);
 bar.addBlock(volumeBlock);
 bar.addBlock(timeBlock);
+bar.addBlock(userBlock);
 
-bar.on("leftClick", function(blockName) {
+bar.on("leftClick", async function(blockName) {
   if (blockName === "volume") {
-    exec("pactl set-sink-mute 0 toggle", function() {
-      bar.render();
-    });
+    await getCommandOutput("pactl set-sink-mute 0 toggle");
+    bar.render();
   }
 });
 
-bar.on("mouseWheelUp", function(blockName) {
+bar.on("mouseWheelUp", async function(blockName) {
   if (blockName === "volume") {
-    exec("pactl set-sink-volume 0 +1%", function() {
+    await getCommandOutput("pactl set-sink-volume 0 +1%");
+    bar.render();
+  } else if (blockName === "brightness") {
+    // I use xorg-xbacklight from the Archlinux official packages to control the brightness of my laptop
+    const brightness = await getCommandOutput("xbacklight -get")
+
+    if (brightness) {
+      await getCommandOutput(`xbacklight -set ${parseInt(brightness) + 10}`)
       bar.render();
-    });
+    }
   }
 });
 
-bar.on("mouseWheelDown", function(blockName) {
+bar.on("mouseWheelDown", async function(blockName) {
   if (blockName === "volume") {
-    exec("pactl set-sink-volume 0 -1%", function() {
+    await getCommandOutput("pactl set-sink-volume 0 -1%");
+    bar.render();
+  } else if (blockName === "brightness") {
+    const brightness = await getCommandOutput("xbacklight -get")
+
+    if (brightness && brightness > 10) {
+      await getCommandOutput(`xbacklight -set ${parseInt(brightness) - 10}`)
       bar.render();
-    });
+    }
   }
 });
 

@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import { terser } from "rollup-plugin-terser";
+import { eslint } from "rollup-plugin-eslint";
 
 import babel from "rollup-plugin-babel";
 
@@ -16,6 +17,13 @@ export default {
   ],
 
   plugins: [
+    process.env.NODE_ENV === "production" && eslint({
+      fix: true,
+      throwOnError: true,
+      throwOnWarning: true,
+      exclude: "node_modules/**"
+    }),
+
     babel({
       exclude: "node_modules/**"
     }),

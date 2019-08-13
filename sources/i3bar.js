@@ -33,7 +33,7 @@ export class I3Block {
       throw new TypeError("Expected first argument to be a string.");
     }
 
-    if (!properties.hasOwnProperty("full_text")) {
+    if (!Object.prototype.hasOwnProperty.call(properties, "full_text")) {
       throw new ReferenceError("Property full_text missing.");
     }
 
@@ -59,21 +59,24 @@ export class I3Block {
   }
 
   async normalize() {
-    const block = {};
+    const unpromisedProperties = await Promise.all(Object.entries(this.properties).map(async function([ key, value ]) {
+      switch(type(value)) {
+      case "asyncfunction":
+        return [key, await value()];
 
-    for (const [ key, value ] of Object.entries(this.properties)) {
-      const typeOfValue = type(value);
+      case "function":
+        return [key, value()];
 
-      if (typeOfValue === "function") {
-        block[key] = value();
-      } else if (typeOfValue === "asyncfunction") {
-        block[key] = await value();
-      } else {
-        block[key] = value;
+      default:
+        return [key, value];
       }
-    }
+    }));
 
-    return block;
+    return unpromisedProperties.reduce(function(properties, [key, value]) {
+      return Object.assign(properties, {
+        [key]: value
+      });
+    }, {});
   }
 }
 
@@ -107,7 +110,7 @@ export class I3Bar extends EventEmitter {
       throw new Error("Expected exactly one argument.");
     }
 
-    this.secondsBetweenRefreshes = secondsBetweenRefreshes
+    this.secondsBetweenRefreshes = secondsBetweenRefreshes;
   }
 
   addBlock(block) {
@@ -127,11 +130,9 @@ export class I3Bar extends EventEmitter {
       throw new Error("Expected exactly zero arguments.");
     }
 
-    const normalizedBlocks = [];
-
-    for (const block of this.blocks) {
-      normalizedBlocks.push(await block.normalize());
-    }
+    const normalizedBlocks = await Promise.all(this.blocks.map(function(block) {
+      return block.normalize();
+    }));
 
     process.stdout.write(JSON.stringify(normalizedBlocks));
     process.stdout.write(",");
@@ -143,7 +144,7 @@ export class I3Bar extends EventEmitter {
     }
 
     if (!this.clickEventsEnabled) {
-      return;
+      return null;
     }
 
     const readline = createInterface({
@@ -155,36 +156,43 @@ export class I3Bar extends EventEmitter {
       try {
         const event = JSON.parse(line.replace(/^,/, ""));
 
-        if (event.hasOwnProperty("button") && event.hasOwnProperty("name")) {
+        if (
+          Object.prototype.hasOwnProperty.call(event, "button")
+          && Object.prototype.hasOwnProperty.call(event, "name")
+          && Object.prototype.hasOwnProperty.call(event, "modifiers")
+        ) {
           switch(event.button) {
-            case 1:
-              this.emit("leftClick", event.name);
-              break;
+          case 1:
+            this.emit("leftClick", event.name, event.modifiers);
+            break;
 
-            case 2:
-              this.emit("middleClick", event.name);
-              break;
+          case 2:
+            this.emit("middleClick", event.name, event.modifiers);
+            break;
 
-            case 3:
-              this.emit("rightClick", event.name);
-              break;
+          case 3:
+            this.emit("rightClick", event.name, event.modifiers);
+            break;
 
-            case 4:
-              this.emit("mouseWheelUp", event.name);
-              break;
+          case 4:
+            this.emit("mouseWheelUp", event.name, event.modifiers);
+            break;
 
-            case 5:
-              this.emit("mouseWheelDown", event.name);
-              break;
+          case 5:
+            this.emit("mouseWheelDown", event.name, event.modifiers);
+            break;
+
+          // Skip default
           }
         }
-      } catch (error) {
+      } catch (error) { // eslint-disable-line 
       } finally {
         readline.close();
         /* istanbul ignore next */
         if (process.env.NODE_ENV !== "test") {
           this.listenEvents();
         }
+
       }
     });
 
@@ -212,7 +220,7 @@ export class I3Bar extends EventEmitter {
     while (true) {
       this.render();
 
-      await after(this.secondsBetweenRefreshes).seconds;
+      await after(this.secondsBetweenRefreshes).seconds; // eslint-disable-line no-await-in-loop
 
       /* istanbul ignore next */
       if (process.env.NODE_ENV === "test") {
