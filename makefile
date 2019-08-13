@@ -1,4 +1,4 @@
-.PHONY: start stop restart shell install test production coverage development
+.PHONY: start stop restart shell install test production coverage development publish
 
 install: start
 	docker-compose exec node npm install
@@ -25,3 +25,7 @@ coverage: start
 
 development: start
 	docker-compose exec node npm run development
+
+publish: start
+	docker-compose exec node npm login
+	docker-compose exec node npm publish --access public
