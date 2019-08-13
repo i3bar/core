@@ -4,4 +4,4 @@
 
 **0.2.0**:
 
-- Added a way to get the modifiers keys issues with the event.
+- Added a way to get the modifiers keys with the event (#1).
