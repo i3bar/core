@@ -1,4 +1,12 @@
 {
+  "all": true,
+  "cache": false,
+  "extension": [
+    ".js"
+  ],
+  "include": [
+    "sources/**/*.js"
+  ],
   "reporter": [
     "text",
     "lcovonly"
