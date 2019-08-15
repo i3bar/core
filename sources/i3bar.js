@@ -2,17 +2,17 @@
  *
  * Core library for creating i3bar using Node.js.
  * Copyright (C) 2019 Amin NAIRI
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
@@ -25,11 +25,11 @@ import EventEmitter from "events";
 
 export class I3Block {
   constructor(properties) {
-    if (arguments.length !== 1) {
+    if (1 !== arguments.length) {
       throw new Error("Expected exactly one argument.");
     }
 
-    if (type(properties) !== "object") {
+    if ("object" !== type(properties)) {
       throw new TypeError("Expected first argument to be a string.");
     }
 
@@ -39,7 +39,7 @@ export class I3Block {
 
     const typeFullText = type(properties.full_text);
 
-    if (typeFullText !== "string" && typeFullText !== "function" && typeFullText !== "asyncfunction") {
+    if ("string" !== typeFullText && "function" !== typeFullText && "asyncfunction" !== typeFullText) {
       throw new TypeError("Property full_text expected to be a string, a function or an asynchronous function.");
     }
 
@@ -47,35 +47,33 @@ export class I3Block {
   }
 
   update(property, newValue) {
-    if (arguments.length !== 2) {
+    if (2 !== arguments.length) {
       throw new Error("Expected exactly two arguments.");
     }
 
-    if (type(property) !== "string") {
+    if ("string" !== type(property)) {
       throw new TypeError("The property to update must be a string.");
     }
 
-    this.properties[property] = newValue;
+    this.properties[ property ] = newValue;
   }
 
   async normalize() {
     const unpromisedProperties = await Promise.all(Object.entries(this.properties).map(async function([ key, value ]) {
-      switch(type(value)) {
+      switch (type(value)) {
       case "asyncfunction":
-        return [key, await value()];
+        return [ key, await value() ];
 
       case "function":
-        return [key, value()];
+        return [ key, value() ];
 
       default:
-        return [key, value];
+        return [ key, value ];
       }
     }));
 
-    return unpromisedProperties.reduce(function(properties, [key, value]) {
-      return Object.assign(properties, {
-        [key]: value
-      });
+    return unpromisedProperties.reduce(function(properties, [ key, value ]) {
+      return Object.assign(properties, { [ key ]: value });
     }, {});
   }
 }
@@ -90,7 +88,7 @@ export class I3Bar extends EventEmitter {
   }
 
   enableEvents() {
-    if (arguments.length !== 0) {
+    if (0 !== arguments.length) {
       throw new Error("Expected exactly zero arguments.");
     }
 
@@ -98,15 +96,15 @@ export class I3Bar extends EventEmitter {
   }
 
   setSecondsBetweenRefreshes(secondsBetweenRefreshes) {
-    if (type(secondsBetweenRefreshes) !== "number") {
+    if ("number" !== type(secondsBetweenRefreshes)) {
       throw new TypeError("First argument must be a number.");
     }
 
-    if (secondsBetweenRefreshes < 0) {
+    if (0 > secondsBetweenRefreshes) {
       throw new Error("First argument cannot be lower than zero.");
     }
 
-    if (arguments.length !== 1) {
+    if (1 !== arguments.length) {
       throw new Error("Expected exactly one argument.");
     }
 
@@ -114,7 +112,7 @@ export class I3Bar extends EventEmitter {
   }
 
   addBlock(block) {
-    if (arguments.length !== 1) {
+    if (1 !== arguments.length) {
       throw new Error("Expect exactly one argument.");
     }
 
@@ -126,7 +124,7 @@ export class I3Bar extends EventEmitter {
   }
 
   async render() {
-    if (arguments.length !== 0) {
+    if (0 !== arguments.length) {
       throw new Error("Expected exactly zero arguments.");
     }
 
@@ -139,7 +137,7 @@ export class I3Bar extends EventEmitter {
   }
 
   listenEvents() {
-    if (arguments.length !== 0) {
+    if (0 !== arguments.length) {
       throw new Error("Expected exactly zero arguments.");
     }
 
@@ -157,11 +155,9 @@ export class I3Bar extends EventEmitter {
         const event = JSON.parse(line.replace(/^,/, ""));
 
         if (
-          Object.prototype.hasOwnProperty.call(event, "button")
-          && Object.prototype.hasOwnProperty.call(event, "name")
-          && Object.prototype.hasOwnProperty.call(event, "modifiers")
+          Object.prototype.hasOwnProperty.call(event, "button") && Object.prototype.hasOwnProperty.call(event, "name") && Object.prototype.hasOwnProperty.call(event, "modifiers")
         ) {
-          switch(event.button) {
+          switch (event.button) {
           case 1:
             this.emit("leftClick", event.name, event.modifiers);
             break;
@@ -189,10 +185,9 @@ export class I3Bar extends EventEmitter {
       } finally {
         readline.close();
         /* istanbul ignore next */
-        if (process.env.NODE_ENV !== "test") {
+        if ("test" !== process.env.NODE_ENV) {
           this.listenEvents();
         }
-
       }
     });
 
@@ -200,11 +195,11 @@ export class I3Bar extends EventEmitter {
   }
 
   async start() {
-    if (arguments.length !== 0) {
+    if (0 !== arguments.length) {
       throw new Error("Expected no arguments.");
     }
 
-    if (type(this.secondsBetweenRefreshes) !== "number") {
+    if ("number" !== type(this.secondsBetweenRefreshes)) {
       throw new TypeError("Seconds between refreshes must be set before using this method.");
     }
 
@@ -223,7 +218,7 @@ export class I3Bar extends EventEmitter {
       await after(this.secondsBetweenRefreshes).seconds; // eslint-disable-line no-await-in-loop
 
       /* istanbul ignore next */
-      if (process.env.NODE_ENV === "test") {
+      if ("test" === process.env.NODE_ENV) {
         break;
       }
     }
