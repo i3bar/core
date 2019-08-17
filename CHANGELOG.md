@@ -1,3 +1,6 @@
+**0.4.0**:
+- Added an HTML version of the documentation ([#16](./pull/16)).
+
 **0.3.0**:
 - Added a version badge in the documentation for the latest NPM release ([#14](./pull/14)).
 - Added more configuration options to the Istanbul configuration file ([#13](./pull/13)).
