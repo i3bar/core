@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Documentation - @i3bar/core</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/themes/prism.css">
+
+    <style>
+      header, main, footer {
+        padding-left: 300px;
+      }
+
+      @media only screen and (max-width : 992px) {
+        header, main, footer {
+          padding-left: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <ul id="slide-out" class="sidenav sidenav-fixed">
+      <li><a href="#requirements">Requirements</a></li>
+      <li><a href="#usage">Usage</a></li>
+      <li><a href="#api">API</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+
+    <header>
+      <nav>
+        <div class="nav-wrapper">
+          <a href="" class="brand-logo">@i3bar/core</a>
+
+          <a href="#" data-target="slide-out" class="sidenav-trigger">
+            <i class="material-icons">menu</i>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="col s12">
+            <h2 id="requirements" class="flow-text">Requirements</h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <ul class="browser-default">
+              <li>
+                <a href="https://en.wikipedia.org/wiki/Linux_distribution" target="blank">A GNU/Linux distribution.</a>
+              </li>
+
+              <li>
+                <a href="https://nodejs.org/en/" target="blank">Node.js</a>
+              </li>
+
+              <li>
+                <a href="https://www.npmjs.com/" target="blank">NPM</a>
+              </li>
+
+              <li>
+                <a href="https://i3wm.org/" target="blank">i3wm</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <p>You should check for these binaries to be installed on your system before continuing. Here is a sample output of an example to help you test these out.</p>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-bash">$ node --version
+v10.16.0
+$ npm --version
+6.9.0
+$ i3 --version
+i3 version 4.17 (2019-08-03) © 2009 Michael Stapelberg and contributors</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h2 id="usage" class="flow-text">Usage</h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Create a directory</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-shell">$ mkdir my-i3bar</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Go into that directory</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-shell">$ cd my-i3bar</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Initialize a new NPM project</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-shell">$ npm init --yes</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Install the <a href="https://www.npmjs.com/package/@i3bar/core" target="blank"><code class="language-javascript">"@i3bar/core"</code></a> package</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-shell">$ npm install --save-dev @i3bar/core</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Create the main script</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-shell">$ touch main.js</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Open the main script with your favorite editor (here, VIM)</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-shell">$ vim main.js</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Import the <a href="https://www.npmjs.com/package/@i3bar/core" target="blank"><code class="language-javascript">"@i3bar/core"</code></a> utilities</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">"use strict";
+
+const { I3bar, I3Block } = require("@i3bar/core");</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Create a new bar instance</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const bar = new I3bar();</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Create a new block</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const block = new I3Block({ full_text: "Hello, i3!" });</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Add the block to the bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">bar.addBlock(block);</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Add a refresh time to the bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">bar.setSecondsBetweenRefreshes(5);</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Start the bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">bar.start();</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Open the i3 configuration file</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-shell">$ vim ~/.config/i3/config</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Update the bar command</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-none">bar {
+    status_command node /path/to/my-i3bar/main.js
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Reload the bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-shell">$ i3 reload</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h2 class="flow-text" id="api">API</h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Create a new bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Bar } = require("@i3bar/core");
+
+const bar = new I3Bar();</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Enable events</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Bar } = require("@i3bar/core");
+
+const bar = new I3Bar();
+
+bar.enableEvents();</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <p>This is required for listening to the bar events.</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Listen to bar events</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Bar, I3Block } = require("@i3bar/core");
+
+const bar = new I3Bar();
+const block = new I3Block({ full_text: "volume", name: "volume" });
+
+bar.addBlock(block);
+bar.enableEvents();
+
+bar.on("leftClick", function(blockName, modifiers) {
+  if (blockName === "volume") {
+    //...
+  } else if (blockName === "brightness" && modifiers.includes("Shift")) {
+    //...
+  }
+});
+
+bar.on("rightClick", function(blockName, modifiers) {
+  //...
+});
+
+bar.on("middleClick", function(blockName, modifiers) {
+  //...
+});
+
+bar.on("mouseWheelDown", function(blockName, modifiers) {
+  //...
+});
+
+bar.on("mouseWheelUp", function(blockName, modifiers) {
+  //...
+});</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <p><code class="language-javascript">blockName</code> is a string containing the <code class="language-javascript">"name"</code> of the block where the event occured, while <code class="language-javascript">modifiers</code> is an array containing the modifiers attached to the event like <code class="language-javascript">"Shift"</code> or <code class="language-javascript">"Control"</code></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Set the refresh time between each updates of the bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Bar } = require("@i3bar/core");
+
+const bar = new I3Bar();
+
+bar.setSecondsBetweenRefreshes(5);</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <p>If you need to refresh the bar often, try not to set this value too low as this will increase your CPU usage. Instead, use events and timers in Node.js (see <a href="#faq">FAQ</a>).</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Add a block to the bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Bar, I3Block } = require("@i3bar/core");
+
+const bar = new I3Bar();
+const block = new I3Block({ full_text: "" });
+
+bar.addBlock(block);</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Manually trigger an update of the bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Bar} = require("@i3bar/core");
+
+const bar = new I3Bar();
+
+bar.render();</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Start the bar</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Bar } = require("@i3bar/core");
+
+const bar = new I3Bar();
+
+bar.start();</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Create a block</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Block } = require("@i3bar/core");
+
+const block = new I3Block({ full_text: "" });</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Add a block with a dynamic text</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Block } = require("@i3bar/core");
+
+function getText() {
+  return "";
+}
+
+async function getTextAsync() {
+  return "";
+}
+
+function getTextPromise() {
+  return new Promise(function(resolve) {
+    resolve("");
+  });
+}
+
+const block1 = new I3Block({ full_text: getText });
+const block2 = new I3Block({ full_text: getTextAsync });
+const block3 = new I3Block({ full_text: getTextPromise });</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">Update the block manually</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { I3Block } = require("@i3bar/core");
+
+const block = new I3Block({ full_text: "loading..." });
+
+block.update("full_text", "loaded");</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h2 class="flow-text" id="faq">FAQ</h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">How to add dynamic values for the <code class="language-javascript">"full_text"</code> property?</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h4 class="flow-text">Using a function</h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">function getTime() {
+  const date = new Date();
+
+  return `${date.getHours().toString().padStart(2. "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+}
+
+const block = new I3Block({ full_text: getTime });</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h4 class="flow-text">Using an asynchronous function</h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { promisify } = require("util");
+const { exec } = require("child_process"); 
+const execute = promisify(exec);
+
+async function getBattery(command) {
+  try {
+    const battery = await execute("cat /sys/class/power_supply/BAT0/capacity");
+
+    return battery.stdout.trim() + "%";
+  } catch {
+    return "??%";
+  }
+}
+            
+const block = new I3Block({ full_text: getBattery });
+            </code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h4 class="flow-text">Using the built-in <code class="language-javascript">update()</code> method</h4>
+          </div>
+        </div>
+
+        <p>Note that this is the prefered method as it does not block the main thread.</p>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { exec } = require("child_process");
+
+const block = new I3Block({ full_text: "" });
+
+exec("xbacklight -get", function(exception, output, error) {
+  if (!exception && !error) {
+    block.update("full_text", `${output.trim()}%`); 
+    bar.render();
+  }
+});</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h4 class="flow-text">Using <code class="language-javascript">setInterval()</code> to update on a different interval than the bar</h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { get } = require("https");
+
+const block = new I3Block({ full_text: "" });
+const TEN_MINUTES = 1000 * 60 * 10;
+
+function updateWeather() {
+  get("https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22", function(response) {
+    response.on("data", function() {
+      const weather = JSON.parse(data);
+
+      block.update("full_text", `${weather.main.temp}°F`);
+    });
+  });
+}
+
+updateWeather();
+setInterval(updateWeather, TEN_MINUTES);</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">How to update the bar on events?</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">const { exec } = require("child_process");
+const { promisify } = require("util");
+
+const execute = promisify(exec);
+
+async function getBrightness() {
+  try {
+    const brightness = await execute("xbacklight -get");
+
+    return `${Math.floor(brightness.stdout)}%`;
+  } catch {
+    return "??%";
+  }
+}
+
+const block = new I3Block({ full_text: getBrightness, name: "brightness" });
+
+bar.on("leftClick", async function(blockName) {
+  if (blockName === "brightness") {
+    try {
+      await execute("xbacklight -set $(( $(xbacklight -get) + 1 ))");
+      bar.render();
+    } catch {}
+  }
+});
+
+bar.enableEvents();</code></pre>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <p>Events available are: <code class="language-javascript">"leftClick"</code>, <code class="language-javascript">"rightClick"</code>, <code class="language-javascript">"middleClick"</code>, <code class="language-javascript">"mouseWheelUp"</code> & <code class="language-javascript">"mouseWheelDown"</code></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <h3 class="flow-text">How to use modifiers with events?</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <pre><code class="language-javascript">bar.on("leftClick", async function(blockName, modifiers) {
+  if (blockName === "brightness" && modifiers.includes("Shift")) {
+    //...
+  }
+});</code></pre>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/prism.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const elems = document.querySelectorAll('.sidenav');
+        const instances = M.Sidenav.init(elems, {});
+      });
+    </script>
+  </body>
+</html>
